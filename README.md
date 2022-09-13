@@ -1,5 +1,5 @@
 # A deep learning method to estimate the size of occluded crops
-![Size the invisible crop](./demo/20200819_143612133900_plant1188_rgb_trigger002.png?raw=true)
+![Size the invisible crop](./demo/input_image_and_results_exemple.png?raw=true)
 <br/>
 
 
