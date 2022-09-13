@@ -1,13 +1,13 @@
-# A deep learning method to estimate the size of occluded crops
-![Size the invisible crop](./demo/input_image_and_results_exemple.png?raw=true)
+# A deep learning method to detect and measure partially occluded apples based on simultaneous modal and amodal instance segmentation
+![AmodalFruitSizing](./demo/input_image_and_results_exemple.png?raw=true)
 <br/>
 
 
 ## Summary
-We provide a deep-learning method to better estimate the size of occluded objects. The method is based on ORCNN (https://github.com/waiyulam/ORCNN), which is an extended Mask R-CNN network that outputs two masks for each object:
-1. The regular visible mask ***(purple mask below)***
-2. An additional amodal mask of the visible and the occluded pixels ***(green mask below)*** <br/>
-![Amodal_Visible_Masks](./demo/20200819_143612133900_plant1188_rgb_trigger002_amodal_visible_masks.png?raw=true)
+We provide a deep-learning method to better estimate the size of partially occluded apples. The method is based on ORCNN (https://github.com/waiyulam/ORCNN) and sizecnn (https://git.wur.nl/blok012/sizecnn), which extended Mask R-CNN network to simultaneously perform modal and amodal instance segmentation.
+The amodal mask is used to estimate the fruit diameter in pixels, while the modal mask is used to measure the distance between the detected fruit and the camera and calculate the fruit diameter in mm by applying the pinhole camera model.
+![Modal_Amodal_Segmentation]( ./demo/example_modal_amodal.png?raw=true)
+
 
 ## Installation
 See [INSTALL.md](INSTALL.md)
