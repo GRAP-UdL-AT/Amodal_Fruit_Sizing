@@ -8,7 +8,7 @@ We provide a deep-learning method to better estimate the size of partially occlu
 
 ![Modal_Amodal_Segmentation]( ./demo/example_modal_amodal.png?raw=true)
 
-The amodal mask is used to estimate the fruit diameter in pixels, while the modal mask is used to measure the distance between the detected fruit and the camera and calculate the fruit diameter in mm by applying the pinhole camera model.
+The amodal mask is used to estimate the fruit diameter in pixels, while the modal mask is used to measure in the depth map the distance between the detected fruit and the camera and calculate the fruit diameter in mm by applying the pinhole camera model.
 
 
 ## Installation
