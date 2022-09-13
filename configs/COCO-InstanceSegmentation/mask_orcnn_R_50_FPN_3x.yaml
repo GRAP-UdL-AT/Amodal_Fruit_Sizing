@@ -1,0 +1,9 @@
+_BASE_: "../Base-ORCNN-FPN.yaml"
+MODEL:
+  WEIGHTS: "/home/waiyu/ORCNN/pretrained_model/amodal_mask_orcnn_R_50_FPN_3x.pth"
+  MASK_ON: True
+  RESNETS:
+    DEPTH: 50
+SOLVER:
+  STEPS: (1000, 1300)
+  MAX_ITER: 1500
