@@ -16,11 +16,58 @@ See [INSTALL.md](INSTALL.md)
 
 
 ## Getting started
-The deep-learning method that can be used to estimate the diameter of occluded crops: <br/>
-[ORCNN.md](ORCNN.md) 
+To use this method, please follow this procedure: <br/>
 
-The "base-line" method, which is based on Mask R-CNN and a circle fit method. This method can be compared to the ORCNN sizing method: <br/>
-[MRCNN.md](MRCNN.md) 
+### Download the dataset
+We have made our image-dataset (**PApple_RGB-D-Size dataset**) publicly available, which can be downloaded in the following link: 
+It consists of 3925 RGB-D images of Fuji Apple Trees, including modal and amodal segmentation masks and diameter ground-truth of each annotated apple (15335 annotated apples). 
+
+### Train
+Execute Train_AmodalFruitSize.py to train the network:
+```
+python trainval_net.py \
+    			--num_iterations $MAX_NUM_OF_ITERATIONS --checkpoint_period $CHECKPOINT_PERIOD \
+			--eval_period $EVAL_PERIOD  --batch_size $BATCH_SIZE \
+			--learing_rate $LEARNING_RATE  --LR_decay $WEIGHT_DECAY \
+			--experiment_name $OUTPUT_FOLDER_NAME   --dataset_path $DATASET_DIRECTORY \
+			--batch_size_per_image $BATCH_SIZE_PER_IMAGE 
+```
+example:
+```
+python Train_AmodalFruitSize.py --num_iterations 4000 --checkpoint_period 500 --eval_period 500  --batch_size 4  --learing_rate 0.02  --LR_decay 0.0001 --experiment_name "trial_01"  --dataset_path "/home/user/datasets/PApple_RGB-D-Size_dataset/data"  --batch_size_per_image 512
+```
+
+### Train/Val
+Execute Train_AmodalFruitSize.py to train the network:
+```
+python trainval_net.py \
+    			--num_iterations $MAX_NUM_OF_ITERATIONS --checkpoint_period $CHECKPOINT_PERIOD \
+			--eval_period $EVAL_PERIOD  --batch_size $BATCH_SIZE \
+			--learing_rate $LEARNING_RATE  --LR_decay $WEIGHT_DECAY \
+			--experiment_name $OUTPUT_FOLDER_NAME   --dataset_path $DATASET_DIRECTORY \
+			--batch_size_per_image $BATCH_SIZE_PER_IMAGE 
+```
+example:
+```
+python Train_AmodalFruitSize.py --num_iterations 4000 --checkpoint_period 500 --eval_period 500  --batch_size 4  --learing_rate 0.02  --LR_decay 0.0001 --experiment_name "trial_01"  --dataset_path "/home/user/datasets/PApple_RGB-D-Size_dataset/data"  --batch_size_per_image 512
+```
+
+### Test
+If you want to evlauate the detection performance of a pre-trained model on our set
+Execute AmodalFruitSize_val_test_evaluation.py to test the network:
+```
+python trainval_net.py \
+    			--num_iterations $MAX_NUM_OF_ITERATIONS --checkpoint_period $CHECKPOINT_PERIOD \
+			--eval_period $EVAL_PERIOD  --batch_size $BATCH_SIZE \
+			--learing_rate $LEARNING_RATE  --LR_decay $WEIGHT_DECAY \
+			--experiment_name $OUTPUT_FOLDER_NAME   --dataset_path $DATASET_DIRECTORY \
+			--batch_size_per_image $BATCH_SIZE_PER_IMAGE 
+```
+example:
+```
+python Train_AmodalFruitSize.py --num_iterations 4000 --checkpoint_period 500 --eval_period 500  --batch_size 4  --learing_rate 0.02  --LR_decay 0.0001 --experiment_name "trial_01"  --dataset_path "/home/user/datasets/PApple_RGB-D-Size_dataset/data"  --batch_size_per_image 512
+```
+
 
 ## Results
 We evaluated the sizing performance of the two methods on an independent test set of 487 RGB-D images. The broccoli heads in the test set had occlusion rates between 0% and 100%.

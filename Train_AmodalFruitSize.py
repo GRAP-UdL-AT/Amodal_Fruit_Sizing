@@ -119,8 +119,6 @@ def parse_args():
     parser.add_argument('--experiment_name',dest='experiment_name',default='trial3')
     parser.add_argument('--dataset_path',dest='dataset_path',default='/mnt/gpid08/datasets/fruits/multitask_RGBD/data/')
     parser.add_argument('--batch_size_per_image',dest='bs_per_image',default=512)
-    parser.add_argument('--weights',dest='weights',default='edit_weights.pkl')
-    parser.add_argument('--freeze_det',dest='freeze_det',default=0) # 1 to do not train the instance segmentation branch and only train the diameter regresion branch
     args = parser.parse_args()
     return args
 
@@ -162,7 +160,6 @@ if __name__ == '__main__':
     experiment_name = args.experiment_name
     dataset_path = args.dataset_path
     bs_per_image = int(args.bs_per_image)
-    weights_file = args.weights
 
     ## Load dataset dicts
     dataset_dicts_train, AmodalFruitSize_train_metadata = load_dataset_dicts(dataset_path, 'train')
