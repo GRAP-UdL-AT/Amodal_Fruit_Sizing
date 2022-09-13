@@ -32,20 +32,20 @@ export LD_LIBRARY_PATH=/usr/local/cuda-10.1/lib64${LD_LIBRARY_PATH:+:${LD_LIBRAR
 - nvcc --version *(should the CUDA details)*<br/> <br/>
 
 
-## 2.) Install SizeCNN in a virtual environment (using Anaconda)
+## 2.) Install Amodal_Fruit_Sizing in a virtual environment (using Anaconda)
 Tested with: Pytorch 1.4 and torchvision 0.5<br/>
 
 **2.1) Download and install Anaconda:**
 - download anaconda: https://www.anaconda.com/distribution/#download-section (python 3.x version)
 - install anaconda (using the terminal, cd to the directory where the file has been downloaded): bash Anaconda3-2019.10-Linux-x86_64.sh <br/> <br/>
 
-**2.2) Make a virtual environment (called sizecnn) using the terminal:**
-- conda create --name sizecnn python=3.8 pip
-- conda activate sizecnn <br/> <br/>
+**2.2) Make a virtual environment (called Amodal_Fruit_Sizing) using the terminal:**
+- conda create --name Amodal_Fruit_Sizing python=3.8 pip
+- conda activate Amodal_Fruit_Sizing <br/> <br/>
 
 **2.3) Download the code repository:**
-- git clone https://git.wur.nl/blok012/sizecnn
-- cd sizecnn <br/> <br/>
+- git clone https://github.com/GRAP-UdL-AT/Amodal_Fruit_Sizing
+- cd Amodal_Fruit_Sizing <br/> <br/>
 
 **2.4) Install the required software libraries (in the sizecnn virtual environment, using the terminal):**
 - pip install -U torch==1.4 torchvision==0.5 -f https://download.pytorch.org/whl/cu101/torch_stable.html 
