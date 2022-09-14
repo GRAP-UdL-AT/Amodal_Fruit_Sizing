@@ -19,25 +19,11 @@ See [INSTALL.md](INSTALL.md)
 To use this method, please follow this procedure: <br/>
 
 ### Download the dataset
-We have made our image-dataset (**PApple_RGB-D-Size dataset**) publicly available, which can be downloaded in the following link: 
+We have made our image-dataset (**PApple_RGB-D-Size dataset**) publicly available, which can be downloaded in the following [link](http://gofile.me/6QM79/MIyx6MCSO). 
+
 It consists of 3925 RGB-D images of Fuji Apple Trees, including modal and amodal segmentation masks and diameter ground-truth of each annotated apple (15335 annotated apples). 
 
 ### Train
-Execute Train_AmodalFruitSize.py to train the network:
-```
-python trainval_net.py \
-    			--num_iterations $MAX_NUM_OF_ITERATIONS --checkpoint_period $CHECKPOINT_PERIOD \
-			--eval_period $EVAL_PERIOD  --batch_size $BATCH_SIZE \
-			--learing_rate $LEARNING_RATE  --LR_decay $WEIGHT_DECAY \
-			--experiment_name $OUTPUT_FOLDER_NAME   --dataset_path $DATASET_DIRECTORY \
-			--batch_size_per_image $BATCH_SIZE_PER_IMAGE 
-```
-example:
-```
-python Train_AmodalFruitSize.py --num_iterations 4000 --checkpoint_period 500 --eval_period 500  --batch_size 4  --learing_rate 0.02  --LR_decay 0.0001 --experiment_name "trial_01"  --dataset_path "/home/user/datasets/PApple_RGB-D-Size_dataset/data"  --batch_size_per_image 512
-```
-
-### Train/Val
 Execute Train_AmodalFruitSize.py to train the network:
 ```
 python trainval_net.py \
@@ -56,18 +42,32 @@ python Train_AmodalFruitSize.py --num_iterations 4000 --checkpoint_period 500 --
 If you want to evlauate the detection performance of a pre-trained model on our set
 Execute AmodalFruitSize_val_test_evaluation.py to test the network:
 ```
-python trainval_net.py \
-    			--num_iterations $MAX_NUM_OF_ITERATIONS --checkpoint_period $CHECKPOINT_PERIOD \
-			--eval_period $EVAL_PERIOD  --batch_size $BATCH_SIZE \
-			--learing_rate $LEARNING_RATE  --LR_decay $WEIGHT_DECAY \
-			--experiment_name $OUTPUT_FOLDER_NAME   --dataset_path $DATASET_DIRECTORY \
-			--batch_size_per_image $BATCH_SIZE_PER_IMAGE 
+python AmodalFruitSize_val_test_evaluation.py \
+                --experiment_name $EXPERIMENT_NAME  --test_name $TEST_ID_NAME \
+                --dataset_path  $DATASET_DIRECTORY  --split $DATASET_SPLIT \
+                --weights  $WEIGHTS_FILE  --focal_length $CAMERA_FOCAL_LENGTH \
+                --iou_thr $INTESECTION_OVER_UNION  --nms_thr $NON_MAXIMUM_SUPRESION \
+                --confs  $MINIMUM_CONFIDENCES_TO_TEST
 ```
 example:
 ```
-python Train_AmodalFruitSize.py --num_iterations 4000 --checkpoint_period 500 --eval_period 500  --batch_size 4  --learing_rate 0.02  --LR_decay 0.0001 --experiment_name "trial_01"  --dataset_path "/home/user/datasets/PApple_RGB-D-Size_dataset/data"  --batch_size_per_image 512
+python AmodalFruitSize_val_test_evaluation.py  --experiment_name 'trial01'  --test_name 'eval_01'  --dataset_path '/home/user/datasets/PApple_RGB-D-Size_dataset/data'  --split  'test'  --weights '/home/user/codes/Amodal_Fruit_Sizing/output/trial01/model_0001999.pth'  --focal_length  5805.34  --iou_thr 0.5  --nms_thr 0.1  --confs '0.0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,0.99'
 ```
 
+### Inference / Demo
+If you want to run the detection and sizing method on your own images with a pre-trained model, download the pretrained model or train your own models at first, and then execute AmodalFruitSize_inference.py: 
+evlauate the detection performance of a pre-trained model on our set
+Execute AmodalFruitSize_val_test_evaluation.py to test the network:
+```
+python AmodalFruitSize_inference.py \
+                --experiment_name $OUTPUT_FOLDER_NAME  --dataset_path  $DEMO_DATA_DIRECTORY \
+                --test_name $FOLDER_FROM_THE_DATASET_CONTAINING_THE_IMAGES  --weights  $WEIGHTS_FILE \
+                --nms_thr $NON_MAXIMUM_SUPRESION  --confs  $MINIMUM_CONFIDENCES_TO_TEST
+```
+example:
+```
+python AmodalFruitSize_inference.py  --experiment_name 'apple_WUR' --dataset_path "./demo/demo_data/apple_WUR/" --test_name '190621-Tree27_E_fl24'  --weights  './output/trial01/model_0002999.pth'  --nms_thr 0.1  --conf 0
+```
 
 ## Results
 We evaluated the sizing performance of the two methods on an independent test set of 487 RGB-D images. The broccoli heads in the test set had occlusion rates between 0% and 100%.
