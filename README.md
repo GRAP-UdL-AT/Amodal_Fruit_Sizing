@@ -55,9 +55,7 @@ python AmodalFruitSize_val_test_evaluation.py  --experiment_name 'trial01'  --te
 ```
 
 ### Inference / Demo
-If you want to run the detection and sizing method on your own images with a pre-trained model, download the pretrained model or train your own models at first, and then execute AmodalFruitSize_inference.py: 
-evlauate the detection performance of a pre-trained model on our set
-Execute AmodalFruitSize_val_test_evaluation.py to test the network:
+If you want to run the detection and sizing method on your own images with a pre-trained model, [download the pretrained model](http://gofile.me/6QM79/bPT2tCNq9) or train your own models at first, and then execute AmodalFruitSize_inference.py: 
 ```
 python AmodalFruitSize_inference.py \
                 --experiment_name $OUTPUT_FOLDER_NAME  --dataset_path  $DEMO_DATA_DIRECTORY \
@@ -66,8 +64,9 @@ python AmodalFruitSize_inference.py \
 ```
 example:
 ```
-python AmodalFruitSize_inference.py  --experiment_name 'apple_WUR' --dataset_path "./demo/demo_data/apple_WUR/" --test_name '190621-Tree27_E_fl24'  --weights  './output/trial01/model_0002999.pth'  --nms_thr 0.1  --conf 0
+python AmodalFruitSize_inference.py  --experiment_name 'demo' --dataset_path "./demo" --test_name 'demo_data'  --weights  './output/trial01/model_0002999.pth'  --nms_thr 0.1  --conf 0
 ```
+Note: To run the AmodalFruitSize_inference.py code the reader can use the images provided in './demo/demo_data'. The pre-trained weights can be downloaded in the following [link](http://gofile.me/6QM79/bPT2tCNq9).
 
 ## Results
 We evaluated the sizing performance of the two methods on an independent test set of 487 RGB-D images. The broccoli heads in the test set had occlusion rates between 0% and 100%.

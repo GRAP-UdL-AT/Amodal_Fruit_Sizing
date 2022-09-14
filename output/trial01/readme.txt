@@ -1,0 +1,1 @@
+Trained weights couldn't be uploaded in this repository due to memory limitations. They can be downloaded in the following link: http://gofile.me/6QM79/bPT2tCNq9
