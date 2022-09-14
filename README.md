@@ -87,7 +87,9 @@ Results when measuring apples automatically detected with a visibility higher th
 Linear correlation between the ground truth (GT) diameter and the automatically measured diameter of apples detected in the test set with a visibility higher than 60%:    
 <p align="center"><img src="./demo/043-linear_regresion_vis06.png" width = "400" >
 
-Qualitative results. Green values correspond to the ground truth and white values are the measures automatically estimated with the present method. Only the apples with an estimated visibility higher than 60% where measured. 
+**Qualitative results:**
+
+Green values correspond to the ground truth and white values are the measures automatically estimated with the present method. Only the apples with an estimated visibility higher than 60% where measured. 
 ![Qualitative_results]( ./demo/qualitative_results_github_2.png?raw=true)
 
 
