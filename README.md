@@ -39,8 +39,7 @@ python Train_AmodalFruitSize.py --num_iterations 4000 --checkpoint_period 500 --
 ```
 
 ### Test
-If you want to evlauate the detection performance of a pre-trained model on our set
-Execute AmodalFruitSize_val_test_evaluation.py to test the network:
+If you want to evlauate the detection performance of a pre-trained model on our set execute AmodalFruitSize_val_test_evaluation.py to test the network:
 ```
 python AmodalFruitSize_val_test_evaluation.py \
                 --experiment_name $EXPERIMENT_NAME  --test_name $TEST_ID_NAME \
@@ -71,7 +70,7 @@ Note: To run the AmodalFruitSize_inference.py code the reader can use the images
 ## Results
 Since the percentage of visibility can be automatically estimated by using modal and amodal masks, we evaluated the sizing performance at different fruit visibility levels:
 
-<p align="center"><img src="./demo/031-MAEvsVis.png" width = "300" >
+<p align="center"><img src="./demo/031-MAEvsVis.png" width = "400" >
 
 
  
@@ -86,9 +85,9 @@ Results when measuring apples automatically detected with a visibility higher th
 
 
 Linear correlation between the ground truth (GT) diameter and the automatically measured diameter of apples detected in the test set with a visibility higher than 60%:    
-<p align="center"><img src="./demo/043-linear_regresion_vis06.png" width = "300" >
+<p align="center"><img src="./demo/043-linear_regresion_vis06.png" width = "400" >
 
-Qualitative results. Green values correspond to the ground truth and white values are the measures automatically estimated with the present method.
+Qualitative results. Green values correspond to the ground truth and white values are the measures automatically estimated with the present method. Only the apples with an estimated visibility higher than 60% where measured. 
 ![Qualitative_results]( ./demo/qualitative_results_github_2.png?raw=true)
 
 
