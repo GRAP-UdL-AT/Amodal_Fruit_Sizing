@@ -111,7 +111,7 @@ if __name__ == '__main__':
 
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_orcnn_X_101_32x8d_FPN_3x.yaml"))
-    cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (broccoli)
+    cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (apple)
 
     cfg.OUTPUT_DIR = "./output/"+str(experiment_name)+"/"+test_name
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)

@@ -186,7 +186,7 @@ if __name__ == '__main__':
     cfg.SOLVER.STEPS = (0, 7000, 11000)
     cfg.SOLVER.CHECKPOINT_PERIOD = 1000
 
-    cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (broccoli)
+    cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (apple)
 
     # https://medium.com/@apofeniaco/training-on-detectron2-with-a-validation-set-and-plot-loss-on-it-to-avoid-overfitting-6449418fbf4e
     cfg.OUTPUT_DIR = "./output/"+str(experiment_name)
