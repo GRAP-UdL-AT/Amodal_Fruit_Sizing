@@ -71,11 +71,11 @@ def load_dataset_dicts(dataset_path, split):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Evaluate detection')
-    parser.add_argument('--experiment_name',dest='experiment_name',default='apple_WUR')
-    parser.add_argument('--test_name',dest='test_name',default='190621-Tree27_E_fl24')
-    parser.add_argument('--dataset_path',dest='dataset_path',default="/mnt/gpid07/users/jordi.gene/amodal_segmentation/data/apple_WUR/")
+    parser.add_argument('--experiment_name',dest='experiment_name',default='demo')
+    parser.add_argument('--test_name',dest='test_name',default='demo_data')
+    parser.add_argument('--dataset_path',dest='dataset_path',default="./datasets/data/")
     parser.add_argument('--output_dir',dest='output_dir',default='./output/',help='name of the directory where to save the output results')
-    parser.add_argument('--weights',dest='weights',default='/mnt/gpid07/users/jordi.gene/amodal_segmentation/code/sizecnn/output/trial01/model_0002999.pth')
+    parser.add_argument('--weights',dest='weights',default='./output/trial01/model_0002999.pth')
     parser.add_argument('--nms_thr',dest='nms_thr',default=0.1)
     parser.add_argument('--conf',dest='conf',default=0)
     args = parser.parse_args()
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     weights_file     = args.weights
     nms_thr          = float(args.nms_thr)
     confidence_score = float(args.conf)
-    output_dir      = args.output_dir
+    output_dir       = args.output_dir
 
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_orcnn_X_101_32x8d_FPN_3x.yaml"))
