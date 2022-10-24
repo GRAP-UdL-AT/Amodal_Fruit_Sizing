@@ -8,15 +8,15 @@ setup_logger()
 # import some common libraries
 import numpy as np
 np.seterr(divide='ignore', invalid='ignore')
-from numpy.linalg import inv
+#from numpy.linalg import inv
 import os
 import cv2
-import random
-import csv
-import json
-from tqdm import tqdm
-import time
-from tqdm import trange
+#import random
+#import csv
+#import json
+#from tqdm import tqdm
+#import time
+#from tqdm import trange
 
 
 # import some miscellaneous libraries
@@ -28,12 +28,13 @@ from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
 from detectron2.utils.visualizer import Visualizer
 from detectron2.data import DatasetCatalog,MetadataCatalog
-from detectron2.engine import DefaultTrainer
-import matplotlib
+#from detectron2.engine import DefaultTrainer
+#import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.pylab as pylab
 
-from utils import dataset_preparation, utils_diameter, utils_eval
+#from utils import dataset_preparation, utils_diameter, utils_eval
+from utils import dataset_preparation, utils_eval
 import argparse
 
 pylab.rcParams['figure.figsize'] = 10,10
@@ -72,6 +73,7 @@ def parse_args():
     parser.add_argument('--experiment_name',dest='experiment_name',default='trial01')
     parser.add_argument('--test_name',dest='test_name',default='eval_01')
     parser.add_argument('--dataset_path',dest='dataset_path',default='/mnt/gpid08/datasets/fruits/multitask_RGBD/data/')
+    parser.add_argument('--output_dir',dest='output_dir',default='./output/',help='name of the directory where to save the output results')
     parser.add_argument('--split',dest='split',default='test')
     parser.add_argument('--weights',dest='weights',default='/mnt/gpid07/users/jordi.gene/amodal_segmentation/code/sizecnn/output/trial01/model_0001999.pth')
     parser.add_argument('--focal_length',dest='focal_length',default=5805.34)
@@ -87,25 +89,16 @@ if __name__ == '__main__':
     ## Read arguments parsed
     args = parse_args()
 
-    # args = argparse.Namespace(
-    #     experiment_name='trial01',
-    #     test_name='eval_02',
-    #     dataset_path='/mnt/gpid08/datasets/fruits/multitask_RGBD/data/',
-    #     split='test',
-    #     weights='/mnt/gpid07/users/jordi.gene/amodal_segmentation/code/sizecnn/output/trial01/model_0002999.pth',
-    #     focal_length = 5805.34,
-    #     iou_thr=0.5,
-    #     nms_thr=0.1,
-    #     confs = '0.0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,0.99',
-    #      )
     experiment_name = args.experiment_name
-    test_name = args.test_name
-    dataset_path = args.dataset_path
-    split = args.split
-    weights_file = args.weights
-    focal_length = float(args.focal_length)
-    iou_thr = float(args.iou_thr)
-    nms_thr = float(args.nms_thr)
+    test_name       = args.test_name
+    dataset_path    = args.dataset_path
+    split           = args.split
+    weights_file    = args.weights
+    focal_length    = float(args.focal_length)
+    iou_thr         = float(args.iou_thr)
+    nms_thr         = float(args.nms_thr)
+    output_dir      = args.output_dir
+
     dataset_dicts, AmodalFruitSize_metadata  = load_dataset_dicts(dataset_path, split)
     confidence_scores = [float(i) for i in args.confs.split(',')]
 
@@ -113,11 +106,13 @@ if __name__ == '__main__':
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_orcnn_X_101_32x8d_FPN_3x.yaml"))
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (apple)
 
-    cfg.OUTPUT_DIR = "./output/"+str(experiment_name)+"/"+test_name
+    #cfg.OUTPUT_DIR = "./output/"+str(experiment_name)+"/"+test_name
+    cfg.OUTPUT_DIR = output_dir+str(experiment_name)+"/"+test_name
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     cfg.MODEL.WEIGHTS = weights_file
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0   # set the testing threshold for this model
-    cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST = 0.01
+    #cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST = 0.01
+    cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST = nms_thr
     cfg.DATASETS.TEST = ("AmodalFruitSize_test",)
 
     predictor = DefaultPredictor(cfg)
