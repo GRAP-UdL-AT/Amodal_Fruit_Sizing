@@ -8,15 +8,15 @@ setup_logger()
 # import some common libraries
 import numpy as np
 np.seterr(divide='ignore', invalid='ignore')
-from numpy.linalg import inv
+#from numpy.linalg import inv
 import os
 import cv2
-import random
+#import random
 import csv
-import json
-from tqdm import tqdm
-import time
-from tqdm import trange
+#import json
+#from tqdm import tqdm
+#import time
+#from tqdm import trange
 
 
 # import some miscellaneous libraries
@@ -74,6 +74,7 @@ def parse_args():
     parser.add_argument('--experiment_name',dest='experiment_name',default='apple_WUR')
     parser.add_argument('--test_name',dest='test_name',default='190621-Tree27_E_fl24')
     parser.add_argument('--dataset_path',dest='dataset_path',default="/mnt/gpid07/users/jordi.gene/amodal_segmentation/data/apple_WUR/")
+    parser.add_argument('--output_dir',dest='output_dir',default='./output/',help='name of the directory where to save the output results')
     parser.add_argument('--weights',dest='weights',default='/mnt/gpid07/users/jordi.gene/amodal_segmentation/code/sizecnn/output/trial01/model_0002999.pth')
     parser.add_argument('--nms_thr',dest='nms_thr',default=0.1)
     parser.add_argument('--conf',dest='conf',default=0)
@@ -86,30 +87,24 @@ if __name__ == '__main__':
     ## Read arguments parsed
     args = parse_args()
 
-    # args = argparse.Namespace(
-    #     experiment_name='apple_WUR',
-    #     test_name='190621-Tree27_E_fl24',
-    #     dataset_path="/mnt/gpid07/users/jordi.gene/amodal_segmentation/data/apple_WUR/",
-    #     weights='/mnt/gpid07/users/jordi.gene/amodal_segmentation/code/sizecnn/output/trial01/model_0002999.pth',
-    #     nms_thr=0.1,
-    #     conf = 0,
-    #      )
-    experiment_name = args.experiment_name
-    test_name = args.test_name
-    dataset_path = os.path.join(args.dataset_path,test_name)
-    weights_file = args.weights
-    nms_thr = float(args.nms_thr)
+    experiment_name  = args.experiment_name
+    test_name        = args.test_name
+    dataset_path     = os.path.join(args.dataset_path,test_name)
+    weights_file     = args.weights
+    nms_thr          = float(args.nms_thr)
     confidence_score = float(args.conf)
+    output_dir      = args.output_dir
 
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_orcnn_X_101_32x8d_FPN_3x.yaml"))
-    cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (broccoli)
+    cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (apple)
 
-    #cfg.OUTPUT_DIR = "./output/"+str(experiment_name)+"/"+test_name
-    cfg.OUTPUT_DIR = "./output/"+str(experiment_name)
+    #cfg.OUTPUT_DIR = "./output/"+str(experiment_name)
+    cfg.OUTPUT_DIR = output_dir+str(experiment_name)
     cfg.MODEL.WEIGHTS = weights_file
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = confidence_score   # set the testing threshold for this model
-    cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST = 0.01
+    #cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST = 0.01
+    cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST = nms_thr
     cfg.DATASETS.TEST = ("AmodalFruitSize_test",)
 
     predictor = DefaultPredictor(cfg)
