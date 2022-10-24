@@ -17,25 +17,26 @@ import random
 from detectron2 import model_zoo
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
-from detectron2.utils.visualizer import Visualizer
+#from detectron2.utils.visualizer import Visualizer
 from detectron2.data import DatasetCatalog,MetadataCatalog
 from detectron2.engine import DefaultTrainer
 import matplotlib.pyplot as plt
-import matplotlib.pylab as pylab
+#import matplotlib.pylab as pylab
 from utils import dataset_preparation
 
 from detectron2.engine.hooks import HookBase
-from detectron2.evaluation import inference_context
-from detectron2.utils.logger import log_every_n_seconds
+#from detectron2.evaluation import inference_context
+#from detectron2.utils.logger import log_every_n_seconds
 from detectron2.data import DatasetMapper, build_detection_test_loader
 import detectron2.utils.comm as comm
 import torch
 import time
-import datetime
-import logging
+#import datetime
+#import logging
 from detectron2.evaluation import AmodalEvaluator
-from detectron2.data.datasets import register_coco_instances
+#from detectron2.data.datasets import register_coco_instances
 
+from available_cpus import available_cpu_count
 
 
 class LossEvalHook(HookBase):
@@ -116,9 +117,12 @@ def parse_args():
     parser.add_argument('--batch_size',dest='batch_size',default=2)
     parser.add_argument('--learing_rate',dest='learing_rate',default=0.02)
     parser.add_argument('--LR_decay',dest='weight_decay',default=0.0001)
+    #parser.add_argument('--batch_size_per_image',dest='bs_per_image',default=512)
     parser.add_argument('--experiment_name',dest='experiment_name',default='trial3')
     parser.add_argument('--dataset_path',dest='dataset_path',default='/mnt/gpid08/datasets/fruits/multitask_RGBD/data/')
-    parser.add_argument('--batch_size_per_image',dest='bs_per_image',default=512)
+    parser.add_argument('--output_dir',dest='output_dir',default='./output/',help='name of the directory where to save the output results')
+    parser.add_argument('--num_workers',dest='num_workers',default=available_cpu_count())
+    parser.add_argument('--num_gpus',dest='num_gpus',default=1)
     args = parser.parse_args()
     return args
 
@@ -138,41 +142,32 @@ if __name__ == '__main__':
 
     ## Read arguments parsed
     args = parse_args()
-    # args = argparse.Namespace(
-    #     num_iterations = 30000,
-    #     checkpoint_period=500,
-    #     eval_period=500,
-    #     batch_size=4,
-    #     learing_rate=0.02,
-    #     LR_decay=0.0001,
-    #     experiment_name='trial01',
-    #     dataset_path='/mnt/gpid08/datasets/fruits/multitask_RGBD/data/',
-    #     bs_per_image=512,
-    #     weights='insert_weights_path.pkl'
-    #     )
 
-    max_iter = int(args.num_iterations)
+    max_iter          = int(args.num_iterations)
     checkpoint_period = int(args.checkpoint_period)
-    eval_period = int(args.eval_period)
-    bs = int(args.batch_size)
-    lr = float(args.learing_rate)
-    lr_decay = float(args.weight_decay)
-    experiment_name = args.experiment_name
-    dataset_path = args.dataset_path
-    bs_per_image = int(args.bs_per_image)
-
-    ## Load dataset dicts
+    eval_period       = int(args.eval_period)
+    bs                = int(args.batch_size)
+    lr                = float(args.learing_rate)
+    lr_decay          = float(args.weight_decay)
+    experiment_name   = args.experiment_name
+    dataset_path      = args.dataset_path
+    bs_per_image      = int(args.bs_per_image)
+    num_workers       = min(int(args.num_workers), available_cpu_count())
+    num_gpus          = min(int(args.num_gpus), torch.cuda.device_count())
+    output_dir        = args.output_dir
+    
+    # Load dataset dicts (needed by AmodalTrainer!)
     dataset_dicts_train, AmodalFruitSize_train_metadata = load_dataset_dicts(dataset_path, 'train')
-    dataset_dicts_val, AmodalFruitSize_val_metadata  = load_dataset_dicts(dataset_path, 'val')
+    dataset_dicts_val, AmodalFruitSize_val_metadata     = load_dataset_dicts(dataset_path, 'val')
 
-    ## Set config parameters
+    # Set config parameters
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_orcnn_X_101_32x8d_FPN_3x.yaml"))
     cfg.DATASETS.TRAIN = ("AmodalFruitSize_train",)
-    cfg.DATASETS.TEST = ("AmodalFruitSize_val",)
+    cfg.DATASETS.TEST  = ("AmodalFruitSize_val",)
 
-    cfg.NUM_GPUS = torch.cuda.device_count()
-    cfg.DATALOADER.NUM_WORKERS = torch.cuda.device_count()
+    cfg.NUM_GPUS = num_gpus #torch.cuda.device_count()
+    cfg.DATALOADER.NUM_WORKERS = num_workers
     cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_X_101_32x8d_FPN_3x.yaml")
 
     # solver file settings extracted from: https://github.com/facebookresearch/Detectron/blob/master/configs/04_2018_gn_baselines/scratch_e2e_mask_rcnn_R-101-FPN_3x_gn.yaml
@@ -181,15 +176,18 @@ if __name__ == '__main__':
     cfg.SOLVER.LR_POLICY = 'steps_with_decay'
     cfg.SOLVER.BASE_LR = lr
     cfg.SOLVER.GAMMA = 0.1
-    cfg.SOLVER.WARMUP_ITERS = 1000
-    cfg.SOLVER.MAX_ITER = 15000
+    
     cfg.SOLVER.STEPS = (0, 7000, 11000)
-    cfg.SOLVER.CHECKPOINT_PERIOD = 1000
+    cfg.SOLVER.WARMUP_ITERS = 1000
+    #cfg.SOLVER.CHECKPOINT_PERIOD = 1000
+    #cfg.SOLVER.MAX_ITER = 15000
+    cfg.SOLVER.CHECKPOINT_PERIOD = checkpoint_period
+    cfg.SOLVER.MAX_ITER = max_iter
 
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (apple)
 
     # https://medium.com/@apofeniaco/training-on-detectron2-with-a-validation-set-and-plot-loss-on-it-to-avoid-overfitting-6449418fbf4e
-    cfg.OUTPUT_DIR = "./output/"+str(experiment_name)
+    cfg.OUTPUT_DIR = output_dir+str(experiment_name)  # "./output/"+str(experiment_name)
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     trainer = AmodalTrainer(cfg)
 
