@@ -58,7 +58,9 @@ class AmodalEvaluator(DatasetEvaluator):
         self._cpu_device = torch.device("cpu")
         self._logger = logging.getLogger(__name__)
 
+        MetadataCatalog.get(dataset_name).thing_classes = ["apple"] ## JRMR!!
         self._metadata = MetadataCatalog.get(dataset_name)
+        
         if not hasattr(self._metadata, "json_file"):
             self._logger.warning(
                 f"json_file was not found in MetaDataCatalog for '{dataset_name}'."
