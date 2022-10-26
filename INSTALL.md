@@ -1,72 +1,55 @@
 ## Installation
 
-## 1.) Install CUDA 10.1 (if not yet installed) 
-Tested on: Ubuntu 18.04, CUDA: 10.1 (10.1.105)<br/> 
+## 1.) Make sure CUDA 11.3 is installed
+Tested on: Ubuntu 18.04, CUDA: 11.3<br/> 
+(will probably work with CUDA 10.1 or later)</br>
 
-**1.1) Install NVIDIA drivers (using the terminal):** 
-- sudo add-apt-repository ppa:graphics-drivers/ppa
-- sudo apt update
-- sudo apt install nvidia-driver-440
-- nvidia-smi
-- sudo reboot <br/> <br/>
+**1.1) Check if CUDA has been installed properly:**
+```
+nvcc --version *(should the CUDA details)*<br/> <br/>
+```
 
-**1.2) Download CUDA 10.1:** 
-- download cuda 10.1: https://developer.nvidia.com/cuda-10.1-download-archive-base?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=1804&target_type=deblocal
-- download the deb file, for example: cuda-repo-ubuntu1804-10-1-local-10.1.105-418.39_1.0-1_amd64.deb <br/> <br/>
+## 2.) Install Amodal_Fruit_Sizing in a virtual environment (using virtualenv)
+Tested with: python 3.0, Pytorch 1.12 and torchvision 0.13<br/>
+(will probably work with python 3.6, pytorch 1.4 and torchvision 0.5)<br/>
 
-**1.3) Install CUDA 10.1 (using the terminal, cd to the directory where the file has been downloaded):** 
-- sudo dpkg -i cuda-repo-ubuntu1804-10-1-local-10.1.105-418.39_1.0-1_amd64.deb
-- sudo apt-key add /var/cuda-repo-10-1-local-10.1.105-418.39/7fa2af80.pub
-- sudo apt-get update
-- sudo apt-get install cuda-toolkit-10-1 <br/> <br/>
+**2.1) Create a virtual environment (called __amodal__) using the terminal and activate it:**
+```
+mkdir -p ~/venv
+virtualenv --python=python3.9 ~/venv/amodal
+source ~/venv/amodal/bin/activate
+```
 
-**1.4) Set the environmental path:**
-- sudo gedit ~/.bashrc
-- add the following 2 lines at the end of the bashrc file:
-export PATH=/usr/local/cuda-10.1/bin${PATH:+:${PATH}}
-export LD_LIBRARY_PATH=/usr/local/cuda-10.1/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-- save the bashrc file and close it
-- source ~/.bashrc <br/> <br/>
+**2.2) Download the code repository:**
+```
+git clone https://github.com/GRAP-UdL-AT/Amodal_Fruit_Sizing
+cd Amodal_Fruit_Sizing <br/> <br/>
+```
 
-**1.5) Check if CUDA has been installed properly:**
-- nvcc --version *(should the CUDA details)*<br/> <br/>
+**2.3) Install the required software libraries (in the __amodal__ virtual environment, using the terminal):**
+```
+pip install numpy==1.23.4
+pip install cython pyyaml==6.0
+pip install -U 'git+https://github.com/cocodataset/cocoapi.gitsubdirectory=PythonAPI'
+pip install jupyter==1.0.0
+pip install opencv-python==4.6.0.66
+pip install nbformat==5.7.0
+pip install scikit-image==0.19.3 matplotlib==3.6.0 imageio==2.22.2
+pip install black==22.10.0 isort==5.10.1 flake8==5.0.4 flake8-bugbear==22.9.23 flake8-comprehensions==3.10.0
+pip install tifffile==2022.10.10
+pip install tqdm==4.64.1 
+pip install pandas==1.5.1
+pip install seaborn==0.12.1 
+pip install circle-fit==0.1.3
+pip install fvcore==0.1.5.post20220512
+pip install pycocotools==2.0
+pip install sklearn==1.1.2
+pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
+pip install -e . 
+```
+Always make sure to install a pytorch version matching your cuda version.<br/>
 
-
-## 2.) Install Amodal_Fruit_Sizing in a virtual environment (using Anaconda)
-Tested with: Pytorch 1.4 and torchvision 0.5<br/>
-
-**2.1) Download and install Anaconda:**
-- download anaconda: https://www.anaconda.com/distribution/#download-section (python 3.x version)
-- install anaconda (using the terminal, cd to the directory where the file has been downloaded): bash Anaconda3-2019.10-Linux-x86_64.sh <br/> <br/>
-
-**2.2) Make a virtual environment (called Amodal_Fruit_Sizing) using the terminal:**
-- conda create --name Amodal_Fruit_Sizing python=3.8 pip
-- conda activate Amodal_Fruit_Sizing <br/> <br/>
-
-**2.3) Download the code repository:**
-- git clone https://github.com/GRAP-UdL-AT/Amodal_Fruit_Sizing
-- cd Amodal_Fruit_Sizing <br/> <br/>
-
-**2.4) Install the required software libraries (in the sizecnn virtual environment, using the terminal):**
-- pip install -U torch==1.4 torchvision==0.5 -f https://download.pytorch.org/whl/cu101/torch_stable.html 
-- pip install cython pyyaml==5.1
-- pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
-- pip install jupyter
-- pip install opencv-python
-- conda install -c conda-forge -c fvcore fvcore
-- pip install nbformat==4.4
-- pip install scikit-image matplotlib imageio
-- pip install black isort flake8 flake8-bugbear flake8-comprehensions
-- pip install -e . 
-- pip install tifffile
-- pip install tqdm 
-- pip install pandas
-- pip install seaborn 
-- pip install circle-fit <br/> <br/>
-
-**2.5) Reboot/restart the computer (sudo reboot)** <br/> <br/>
-
-**2.6) Check if Pytorch links with CUDA (in the sizecnn virtual environment, using the terminal):**
+**2.4) Check if Pytorch links with CUDA (in the __amodal__ virtual environment, using the terminal):**
 - python
 - import torch
 - torch.version.cuda *(should print 10.1)*
@@ -74,7 +57,7 @@ Tested with: Pytorch 1.4 and torchvision 0.5<br/>
 - torch.cuda.get_device_name(0) *(should print the name of the first GPU)*
 - quit() <br/> <br/>
 
-**2.7) Check if detectron2 is found in python (in the sizecnn virtual environment, using the terminal):**
+**2.5) Check if detectron2 is found in python (in the amodal virtual environment, using the terminal):**
 - python
 - import detectron2 *(should not print an error)*
 - from detectron2 import model_zoo *(should not print an error)*
