@@ -151,7 +151,7 @@ if __name__ == '__main__':
     lr_decay          = float(args.weight_decay)
     experiment_name   = args.experiment_name
     dataset_path      = args.dataset_path
-    bs_per_image      = int(args.bs_per_image)
+    #bs_per_image      = int(args.bs_per_image)
     num_workers       = min(int(args.num_workers), available_cpu_count())
     num_gpus          = min(int(args.num_gpus), torch.cuda.device_count())
     output_dir        = args.output_dir
