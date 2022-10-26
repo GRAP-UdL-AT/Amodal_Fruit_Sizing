@@ -50,15 +50,19 @@ pip install -e .
 Always make sure to install a pytorch version matching your cuda version.<br/>
 
 **2.4) Check if Pytorch links with CUDA (in the __amodal__ virtual environment, using the terminal):**
-- python
-- import torch
-- torch.version.cuda *(should print 10.1)*
-- torch.cuda.is_available() *(should True)*
-- torch.cuda.get_device_name(0) *(should print the name of the first GPU)*
-- quit() <br/> <br/>
+``` 
+python
+import torch
+torch.version.cuda #(should print 10.1)
+torch.cuda.is_available() #(should True)
+torch.cuda.get_device_name(0) #(should print the name of the first GPU)
+quit()
+```
 
 **2.5) Check if detectron2 is found in python (in the amodal virtual environment, using the terminal):**
-- python
-- import detectron2 *(should not print an error)*
-- from detectron2 import model_zoo *(should not print an error)*
-- quit() <br/>
+```
+python
+import detectron2 #(should not print an error)
+from detectron2 import model_zoo #(should not print an error)
+quit()
+```
