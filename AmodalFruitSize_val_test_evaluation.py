@@ -8,16 +8,8 @@ setup_logger()
 # import some common libraries
 import numpy as np
 np.seterr(divide='ignore', invalid='ignore')
-#from numpy.linalg import inv
 import os
 import cv2
-#import random
-#import csv
-#import json
-#from tqdm import tqdm
-#import time
-#from tqdm import trange
-
 
 # import some miscellaneous libraries
 from utils import visualize
@@ -28,16 +20,15 @@ from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
 from detectron2.utils.visualizer import Visualizer
 from detectron2.data import DatasetCatalog,MetadataCatalog
-#from detectron2.engine import DefaultTrainer
-#import matplotlib
-import matplotlib.pyplot as plt
-import matplotlib.pylab as pylab
 
 #from utils import dataset_preparation, utils_diameter, utils_eval
 from utils import dataset_preparation, utils_eval
 import argparse
+import matplotlib.pyplot as plt
 
-pylab.rcParams['figure.figsize'] = 10,10
+#import matplotlib.pylab as pylab
+
+#pylab.rcParams['figure.figsize'] = 10,10
 
 def imshow(img):
     plt.imshow(img[:, :, [2, 1, 0]])
@@ -106,7 +97,6 @@ if __name__ == '__main__':
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_orcnn_X_101_32x8d_FPN_3x.yaml"))
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (apple)
 
-    #cfg.OUTPUT_DIR = "./output/"+str(experiment_name)+"/"+test_name
     cfg.OUTPUT_DIR = output_dir+str(experiment_name)+"/"+test_name
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     cfg.MODEL.WEIGHTS = weights_file
@@ -119,17 +109,6 @@ if __name__ == '__main__':
     output_dir = cfg.OUTPUT_DIR
 
     P, R, F1, AP, MAE, MBE, MAPE, RMSE, r2 =  utils_eval.detect_measure_and_eval(predictor, dataset_dicts, confidence_scores,split,iou_thr,output_dir, focal_length)
-
-
-
-
-
-
-
-
-
-
-
 
     # ## Visualization exemple
     # img = cv2.imread(dataset_dicts[2]['file_name'])
