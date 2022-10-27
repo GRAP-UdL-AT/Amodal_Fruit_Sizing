@@ -8,15 +8,9 @@ setup_logger()
 # import some common libraries
 import numpy as np
 np.seterr(divide='ignore', invalid='ignore')
-#from numpy.linalg import inv
 import os
 import cv2
-#import random
 import csv
-#import json
-#from tqdm import tqdm
-#import time
-#from tqdm import trange
 
 
 # import some miscellaneous libraries
@@ -31,49 +25,16 @@ from detectron2.data import DatasetCatalog,MetadataCatalog
 from detectron2.engine import DefaultTrainer
 import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.pylab as pylab
 
 from utils import dataset_preparation, utils_diameter, utils_eval
 import argparse
-
-pylab.rcParams['figure.figsize'] = 10,10
-
-def imshow(img):
-    plt.imshow(img[:, :, [2, 1, 0]])
-    plt.axis("off")
-    plt.show()
-
-def imshow_original_amodal_instance(img, amodal, instance):
-    f, axarr = plt.subplots(1, 3)
-    axarr[0].imshow(img[:, :, [2, 1, 0]])
-    axarr[0].axis("off")
-    axarr[1].imshow(amodal[:, :, [2, 1, 0]])
-    axarr[1].axis("off")
-    axarr[2].imshow(instance[:, :, [2, 1, 0]])
-    axarr[2].axis("off")
-    plt.waitforbuttonpress(0)
-    plt.close()
-
-def load_dataset_dicts(dataset_path, split):
-    dataset_dicts_file = os.path.join(dataset_path, split + '_dataset_dicts.npy')
-    print('Loading '+split+' DATASET...')
-    if not os.path.exists(dataset_dicts_file):
-        print('Preparing '+split+ ' DATASET...')
-        dataset_dicts = dataset_preparation.get_AmodalFruitSize_dicts(dataset_path,split)
-        np.save(dataset_dicts_file,np.array(dataset_dicts))
-    dataset_dicts = np.load(dataset_dicts_file,allow_pickle=True)
-    try:
-        DatasetCatalog.register("AmodalFruitSize_"+split, lambda d=split: dataset_dicts)
-    except:
-        print("AmodalFruitSize_"+split+" is already registered!")
-    dataset_metadata = MetadataCatalog.get("AmodalFruitSize_"+split)
-    return dataset_dicts, dataset_metadata
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Evaluate detection')
     parser.add_argument('--experiment_name',dest='experiment_name',default='demo')
     parser.add_argument('--test_name',dest='test_name',default='demo_data')
     parser.add_argument('--dataset_path',dest='dataset_path',default="./datasets/data/")
+    parser.add_argument('--split', dest='split_name', default="", help='use this to perform inference only on one of the training/val/test splits. The default is to process all subfolders of ${dataset_path}/images')
     parser.add_argument('--output_dir',dest='output_dir',default='./output/',help='name of the directory where to save the output results')
     parser.add_argument('--weights',dest='weights',default='./output/trial01/model_0002999.pth')
     parser.add_argument('--nms_thr',dest='nms_thr',default=0.1)
@@ -94,12 +55,12 @@ if __name__ == '__main__':
     nms_thr          = float(args.nms_thr)
     confidence_score = float(args.conf)
     output_dir       = args.output_dir
-
+    split            = args.split_name
+    
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_orcnn_X_101_32x8d_FPN_3x.yaml"))
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (apple)
 
-    #cfg.OUTPUT_DIR = "./output/"+str(experiment_name)
     cfg.OUTPUT_DIR = output_dir+str(experiment_name)
     cfg.MODEL.WEIGHTS = weights_file
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = confidence_score   # set the testing threshold for this model
@@ -131,6 +92,10 @@ if __name__ == '__main__':
         focal_length_dict[row[0]]=float(row[1])
 
     for r, d, f in os.walk(os.path.join(dataset_path,'images')):
+        print (os.path.join(dataset_path,'images', split), d, r)
+ 
+        if split != "" and r != os.path.join(dataset_path,'images', split):
+            continue
         for file in f:
             if file.endswith(".png") or file.endswith(".jpg") or file.endswith(".JPG"):
                 print(os.path.join(r, file))
