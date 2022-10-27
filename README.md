@@ -30,9 +30,9 @@ In the following, we will assume that you have downloaded and extracted the dats
 mkdir datasets
 cd datasets
 # if you do not have wget, you can download the file by any other method.
-wget https://zenodo.org/record/7144328/files/PApple_RGB-D-Size_dataset_v1.zip
-unzip PApple_RGB-D-Size_dataset_v1.zip
-rm PApple_RGB-D-Size_dataset_v1.zip
+wget https://zenodo.org/record/7254740/files/PApple_RGB-D-Size_dataset_v3.zip     
+unzip PApple_RGB-D-Size_dataset_v3.zip
+rm PApple_RGB-D-Size_dataset_v3.zip
 cd ..
 ```
 
@@ -78,9 +78,13 @@ python AmodalFruitSize_inference.py \
 ```
 example:
 ```
-python AmodalFruitSize_inference.py  --experiment_name 'demo' --dataset_path "./datasets/data/" --test_name 'demo_data' --output_dir='./output/' --weights  './output/trial01/model_0002999.pth'  --nms_thr 0.1  --conf 0
+python AmodalFruitSize_inference.py  --experiment_name 'demo' --dataset_path "./demo/" --test_name 'demo_data' --output_dir='./output/' --weights  './output/trial01/model_0002999.pth'  --nms_thr 0.1  --conf 0
 ```
-Note: To run the AmodalFruitSize_inference.py code the reader can use the images provided in './demo/demo_data'. The pre-trained weights can be downloaded in the following [link](https://zenodo.org/record/7144328/files/model_0002999.pth).
+Note: To run the AmodalFruitSize_inference.py code the reader can use the images provided in './demo/demo_data'. The pre-trained weights can be downloaded in the following [link](https://zenodo.org/record/7144328/files/model_0002999.pth). It is also possible to run inference on the test/val/train splits of the downloaded dataset:
+
+```
+python AmodalFruitSize_inference.py  --experiment_name 'test_set' --dataset_path "./datasets/" --test_name 'data' --output_dir='./output/' --weights  './output/trial01/model_0002999.pth'  --nms_thr 0.1  --conf 0 --split='test'
+```
 
 ## Results
 Since the percentage of visibility can be automatically estimated by using modal and amodal masks, we evaluated the sizing performance at different fruit visibility levels:
