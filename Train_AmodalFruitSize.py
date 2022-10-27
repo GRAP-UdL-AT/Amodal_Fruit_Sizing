@@ -11,30 +11,22 @@ import numpy as np
 import os
 import cv2
 import random
-# from google.colab.patches import cv2_imshow
 
 # import some common detectron2 utilities
 from detectron2 import model_zoo
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
-#from detectron2.utils.visualizer import Visualizer
 from detectron2.data import DatasetCatalog,MetadataCatalog
 from detectron2.engine import DefaultTrainer
 import matplotlib.pyplot as plt
-#import matplotlib.pylab as pylab
 from utils import dataset_preparation
 
 from detectron2.engine.hooks import HookBase
-#from detectron2.evaluation import inference_context
-#from detectron2.utils.logger import log_every_n_seconds
 from detectron2.data import DatasetMapper, build_detection_test_loader
 import detectron2.utils.comm as comm
 import torch
 import time
-#import datetime
-#import logging
 from detectron2.evaluation import AmodalEvaluator
-#from detectron2.data.datasets import register_coco_instances
 
 from available_cpus import available_cpu_count
 
@@ -117,7 +109,6 @@ def parse_args():
     parser.add_argument('--batch_size',dest='batch_size',default=4)
     parser.add_argument('--learing_rate',dest='learing_rate',default=0.02)
     parser.add_argument('--LR_decay',dest='weight_decay',default=0.0001)
-    #parser.add_argument('--batch_size_per_image',dest='bs_per_image',default=512)
     parser.add_argument('--experiment_name',dest='experiment_name',default='trial01')
     parser.add_argument('--dataset_path',dest='dataset_path',default='./datasets/data/')
     parser.add_argument('--output_dir',dest='output_dir',default='./output/',help='name of the directory where to save the output results')
@@ -151,7 +142,6 @@ if __name__ == '__main__':
     lr_decay          = float(args.weight_decay)
     experiment_name   = args.experiment_name
     dataset_path      = args.dataset_path
-    #bs_per_image      = int(args.bs_per_image)
     num_workers       = min(int(args.num_workers), available_cpu_count())
     num_gpus          = min(int(args.num_gpus), torch.cuda.device_count())
     output_dir        = args.output_dir
@@ -187,7 +177,7 @@ if __name__ == '__main__':
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (apple)
 
     # https://medium.com/@apofeniaco/training-on-detectron2-with-a-validation-set-and-plot-loss-on-it-to-avoid-overfitting-6449418fbf4e
-    cfg.OUTPUT_DIR = output_dir+str(experiment_name)  # "./output/"+str(experiment_name)
+    cfg.OUTPUT_DIR = output_dir+str(experiment_name)
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     trainer = AmodalTrainer(cfg)
 
