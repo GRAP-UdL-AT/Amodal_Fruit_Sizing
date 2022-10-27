@@ -12,7 +12,7 @@ import pdb, copy
 
 # Prepare the dataset
 def get_AmodalFruitSize_dicts(root_dir, split):
-    depth_path = root_dir + 'depthCropNpy'
+    depth_path = root_dir + 'depth_maps'
     diameters_path = root_dir + 'GT_diameter.txt'
     json_file_i = os.path.join(root_dir + 'gt_json/' + split, "via_region_data_instance.json")
     json_file_a = os.path.join(root_dir + 'gt_json/' + split, "via_region_data_amodal.json")
