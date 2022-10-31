@@ -30,9 +30,9 @@ In the following, we will assume that you have downloaded and extracted the dats
 mkdir datasets
 cd datasets
 # if you do not have wget, you can download the file by any other method.
-wget https://zenodo.org/record/7254740/files/PApple_RGB-D-Size_dataset_v3.zip     
-unzip PApple_RGB-D-Size_dataset_v3.zip
-rm PApple_RGB-D-Size_dataset_v3.zip
+wget https://zenodo.org/record/7260694/files/PApple_RGB-D-Size_dataset_v4.zip
+unzip PApple_RGB-D-Size_dataset_v4.zip
+rm PApple_RGB-D-Size_dataset_v4.zip
 cd ..
 ```
 
