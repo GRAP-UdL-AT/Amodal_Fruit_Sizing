@@ -19,7 +19,7 @@ See [INSTALL.md](INSTALL.md)
 To use this method, please follow this procedure: <br/>
 
 ### Download the dataset
-We have made our image-dataset (**PApple_RGB-D-Size dataset**) publicly available, which can be downloaded in the following [link](https://zenodo.org/record/7144328#.Y0AHxOwzYeY)
+We have made our image-dataset (**PApple_RGB-D-Size dataset**) publicly available, which can be downloaded in the following [link](https://zenodo.org/record/7260694#.Y5Blu3bMJPY)
 
 
 It consists of 3925 RGB-D images of Fuji Apple Trees, including modal and amodal segmentation masks and diameter ground-truth of each annotated apple (15335 annotated apples). 
