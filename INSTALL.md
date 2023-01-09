@@ -30,7 +30,7 @@ cd Amodal_Fruit_Sizing <br/> <br/>
 ```
 pip install numpy==1.23.4
 pip install cython pyyaml==6.0
-pip install -U 'git+https://github.com/cocodataset/cocoapi.gitsubdirectory=PythonAPI'
+pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 pip install jupyter==1.0.0
 pip install opencv-python==4.6.0.66
 pip install nbformat==5.7.0
@@ -43,7 +43,7 @@ pip install seaborn==0.12.1
 pip install circle-fit==0.1.3
 pip install fvcore==0.1.5.post20220512
 pip install pycocotools==2.0
-pip install sklearn==1.1.2
+pip install scikit-learn==1.1.2
 pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
 pip install -e . 
 ```
