@@ -126,13 +126,12 @@ Please cite our research article or dataset when using our software and/or datas
 ```
 @article{XXXXX2022,
    title   = {Looking Behind Occlusions Through Amodal Segmentation for Robust On-tree Fruit Size Measurement},
-   author  = {Author01 and Author02 and Author03 and ... and AuthorNN},
-   journal = {YYY},
-   volume  = {ZZZ},
-   pages   = {TTT},
-   year    = {YYY},
-   doi     = {asdasd},
-   url     = {asdasd}
+   author  = {Jordi Gené-Mola and Mar Ferrer-Ferrer and Eduard Gregorio and Pieter M. Blok and Jochen Hemming and Josep-Ramon Morros and Joan R. Rosell-Polo and Verónica Vilaplana and Javier Ruiz-Hidalgo},
+   journal = {Computers and Electronics in Agriculture},
+   volume  = {209},
+   pages   = {107854},
+   year    = {2023},
+   doi     = {https://doi.org/10.1016/j.compag.2023.107854}
 }
 ```
 
